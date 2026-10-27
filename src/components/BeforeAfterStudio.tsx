@@ -28,7 +28,7 @@ export default function BeforeAfterStudio({
   const active = scenarios[selectedIdx] || scenarios[0];
 
   return (
-    <div className="apple-glass mt-10 rounded-[36px] p-7 sm:p-11">
+    <div className="apple-glass mt-10 rounded-[26px] p-4 sm:rounded-[36px] sm:p-11">
       {/* Top Header & Concept Disclaimer — No Border Lines */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -36,7 +36,7 @@ export default function BeforeAfterStudio({
             <Sparkles className="h-3.5 w-3.5" />
             <span>Interactive Before &amp; After Concept Preview</span>
           </div>
-          <h3 className="mt-2 font-display text-2xl font-bold tracking-tight text-[var(--ink)]">
+          <h3 className="mt-2 font-display text-xl font-bold tracking-tight text-[var(--ink)] sm:text-2xl">
             Visual Scenario Explorer · {solutionName}
           </h3>
           <p className="mt-1 text-xs text-[var(--sub)] sm:text-sm">
@@ -45,13 +45,13 @@ export default function BeforeAfterStudio({
         </div>
 
         <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/12 px-3.5 py-1.5 text-[11px] font-medium text-amber-400">
-          <AlertTriangle className="h-3.5 w-3.5" />
-          Illustrative Concept · Not Live AI Execution
+          <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+          <span>Illustrative Concept · Not Live AI Execution</span>
         </span>
       </div>
 
       {/* Controls Bar: Scenario Selector + View Mode Switcher */}
-      <div className="mt-7 flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 sm:mt-7">
         <div className="flex flex-wrap gap-2" role="tablist" aria-label="Visual scenarios">
           {scenarios.map((sc, idx) => (
             <button
@@ -59,7 +59,7 @@ export default function BeforeAfterStudio({
               role="tab"
               aria-selected={selectedIdx === idx}
               onClick={() => setSelectedIdx(idx)}
-              className={`rounded-full px-4 py-2 text-xs font-semibold transition-all ${
+              className={`rounded-full px-3.5 py-2 text-xs font-semibold transition-all sm:px-4 ${
                 selectedIdx === idx
                   ? 'bg-[var(--accent-blue)] text-white shadow-lg'
                   : 'glass-well text-[var(--sub)] hover:text-[var(--ink)]'
@@ -70,10 +70,10 @@ export default function BeforeAfterStudio({
           ))}
         </div>
 
-        <div className="glass-well inline-flex rounded-full p-1 text-xs font-medium">
+        <div className="glass-well grid w-full grid-cols-3 rounded-full p-1 text-[11px] font-medium sm:inline-flex sm:w-auto sm:text-xs">
           <button
             onClick={() => setViewMode('before')}
-            className={`rounded-full px-3.5 py-1.5 transition ${
+            className={`whitespace-nowrap rounded-full px-2.5 py-1.5 transition sm:px-3.5 ${
               viewMode === 'before'
                 ? 'bg-[var(--accent-blue)] text-white shadow-sm'
                 : 'text-[var(--sub)] hover:text-[var(--ink)]'
@@ -83,7 +83,7 @@ export default function BeforeAfterStudio({
           </button>
           <button
             onClick={() => setViewMode('split')}
-            className={`rounded-full px-3.5 py-1.5 transition ${
+            className={`whitespace-nowrap rounded-full px-2.5 py-1.5 transition sm:px-3.5 ${
               viewMode === 'split'
                 ? 'bg-[var(--accent-blue)] text-white shadow-sm'
                 : 'text-[var(--sub)] hover:text-[var(--ink)]'
@@ -93,7 +93,7 @@ export default function BeforeAfterStudio({
           </button>
           <button
             onClick={() => setViewMode('after')}
-            className={`rounded-full px-3.5 py-1.5 transition ${
+            className={`whitespace-nowrap rounded-full px-2.5 py-1.5 transition sm:px-3.5 ${
               viewMode === 'after'
                 ? 'bg-[var(--accent-blue)] text-white shadow-sm'
                 : 'text-[var(--sub)] hover:text-[var(--ink)]'
@@ -106,13 +106,13 @@ export default function BeforeAfterStudio({
 
       {/* Interactive Visual Canvas based on visualType */}
       <div
-        className={`mt-7 grid gap-6 ${
+        className={`mt-6 grid gap-5 sm:mt-7 sm:gap-6 ${
           viewMode === 'split' ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'
         }`}
       >
         {/* BEFORE PANEL */}
         {(viewMode === 'split' || viewMode === 'before') && (
-          <div className="glass-well flex flex-col justify-between rounded-[28px] p-6 sm:p-7">
+          <div className="glass-well flex flex-col justify-between rounded-[22px] p-4 sm:rounded-[28px] sm:p-7">
             <div>
               <div className="flex items-center justify-between gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-rose-400">
@@ -126,7 +126,7 @@ export default function BeforeAfterStudio({
               <p className="mt-1 text-xs text-[var(--sub)]">{active.beforeSubtitle}</p>
 
               {/* Visual Diagram — BEFORE */}
-              <div className="apple-glass my-5 rounded-2xl p-5">
+              <div className="apple-glass my-4 rounded-2xl p-3.5 sm:my-5 sm:p-5">
                 {active.visualType === 'imagery' && (
                   <div className="flex flex-col items-center justify-center py-3 text-center">
                     <div className="glass-well relative flex h-36 w-36 items-center justify-center rounded-2xl">
@@ -226,11 +226,11 @@ export default function BeforeAfterStudio({
               </ul>
             </div>
 
-            <div className="mt-6 grid grid-cols-3 gap-2.5">
+            <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-2.5">
               {active.beforeMetrics.map((m, i) => (
-                <div key={i} className="apple-glass rounded-2xl p-3">
-                  <div className="text-sm font-bold text-rose-400">{m.value}</div>
-                  <div className="mt-0.5 text-[11px] text-[var(--mut)]">{m.label}</div>
+                <div key={i} className="apple-glass rounded-2xl p-2.5 sm:p-3">
+                  <div className="whitespace-nowrap text-xs font-bold text-rose-400 sm:text-sm">{m.value}</div>
+                  <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--mut)] sm:text-[11px]">{m.label}</div>
                 </div>
               ))}
             </div>
@@ -239,7 +239,7 @@ export default function BeforeAfterStudio({
 
         {/* AFTER PANEL */}
         {(viewMode === 'split' || viewMode === 'after') && (
-          <div className="glass-well flex flex-col justify-between rounded-[28px] p-6 sm:p-7">
+          <div className="glass-well flex flex-col justify-between rounded-[22px] p-4 sm:rounded-[28px] sm:p-7">
             <div>
               <div className="flex items-center justify-between gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-400">
@@ -253,10 +253,10 @@ export default function BeforeAfterStudio({
               <p className="mt-1 text-xs text-[var(--sub)]">{active.afterSubtitle}</p>
 
               {/* Visual Diagram — AFTER (Interactive per type) */}
-              <div className="apple-glass my-5 rounded-2xl p-5">
+              <div className="apple-glass my-4 rounded-2xl p-3.5 sm:my-5 sm:p-5">
                 {active.visualType === 'imagery' && (
                   <div>
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <span className="text-[11px] font-medium text-[var(--sub)]">
                         Select output channel ratio:
                       </span>
@@ -276,7 +276,7 @@ export default function BeforeAfterStudio({
                         ))}
                       </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-2.5">
+                    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
                       <div className="glass-well rounded-xl p-3 text-center">
                         <div className="text-[10px] font-semibold text-[var(--accent-cyan)]">
                           On-Model ({selectedChannel})
@@ -375,7 +375,7 @@ export default function BeforeAfterStudio({
 
                 {active.visualType === 'geo' && (
                   <div>
-                    <div className="mb-2.5 flex items-center justify-between text-[11px]">
+                    <div className="mb-2.5 flex flex-wrap items-center justify-between gap-1 text-[11px]">
                       <span className="text-[var(--sub)]">
                         Click a 1.2 × 0.6 km micro-market cell to inspect score:
                       </span>
@@ -383,7 +383,7 @@ export default function BeforeAfterStudio({
                         Cell #{selectedCell + 101} · Score {[74, 82, 68, 79, 92, 86][selectedCell]}/100
                       </span>
                     </div>
-                    <div className="grid grid-cols-6 gap-2">
+                    <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
                       {[
                         { score: 74, label: 'Mod' },
                         { score: 82, label: 'High' },
@@ -432,17 +432,17 @@ export default function BeforeAfterStudio({
               </ul>
             </div>
 
-            <div className="mt-6 grid grid-cols-3 gap-2.5">
+            <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-2.5">
               {active.afterMetrics.map((m, i) => (
-                <div key={i} className="apple-glass rounded-2xl p-3">
+                <div key={i} className="apple-glass rounded-2xl p-2.5 sm:p-3">
                   <div
-                    className={`text-sm font-bold ${
+                    className={`whitespace-nowrap text-xs font-bold sm:text-sm ${
                       m.status === 'cyan' ? 'text-[var(--accent-cyan)]' : 'text-emerald-400'
                     }`}
                   >
                     {m.value}
                   </div>
-                  <div className="mt-0.5 text-[11px] text-[var(--mut)]">{m.label}</div>
+                  <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--mut)] sm:text-[11px]">{m.label}</div>
                 </div>
               ))}
             </div>

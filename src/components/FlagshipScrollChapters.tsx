@@ -91,8 +91,8 @@ export default function FlagshipScrollChapters({
       </ScrollReveal>
 
       {/* Sticky Meta-Style Floating Chapter Bar with Synchronized Pill */}
-      <div className="sticky top-[70px] z-30 mt-10 flex justify-center pointer-events-none">
-        <div className="apple-nav-pill pointer-events-auto relative grid grid-cols-4 items-center rounded-full p-1.5">
+      <div className="sticky top-[64px] z-30 mt-10 flex justify-center pointer-events-none sm:top-[70px]">
+        <div className="apple-nav-pill pointer-events-auto relative grid w-full max-w-[540px] grid-cols-4 items-center rounded-full p-1 sm:w-auto sm:p-1.5">
           {/* Sliding Active Background Pill */}
           <div
             aria-hidden="true"
@@ -100,37 +100,38 @@ export default function FlagshipScrollChapters({
               transform: `translate3d(${activeChapter * 100}%, 0, 0)`,
               transition: 'transform 0.22s cubic-bezier(0.22, 1, 0.36, 1)',
             }}
-            className="pointer-events-none absolute inset-y-1.5 left-1.5 w-[calc((100%-12px)/4)] rounded-full bg-[var(--accent-blue)] shadow-md"
+            className="pointer-events-none absolute inset-y-1 left-1 w-[calc((100%-8px)/4)] rounded-full bg-[var(--accent-blue)] shadow-md sm:inset-y-1.5 sm:left-1.5 sm:w-[calc((100%-12px)/4)]"
           />
           {[
-            '01 · AI Imagery',
-            '02 · Catalog Intel',
-            '03 · Planograms',
-            '04 · Geo-Intel',
-          ].map((label, idx) => (
+            { full: '01 · AI Imagery', short: '01 Imagery' },
+            { full: '02 · Catalog Intel', short: '02 Catalog' },
+            { full: '03 · Planograms', short: '03 Space' },
+            { full: '04 · Geo-Intel', short: '04 Geo' },
+          ].map((item, idx) => (
             <button
-              key={label}
+              key={item.full}
               onClick={() => scrollToChapter(idx)}
-              className={`relative z-10 rounded-full px-3.5 py-1.5 text-center text-xs font-semibold transition-colors duration-150 whitespace-nowrap ${
+              className={`relative z-10 min-w-0 truncate rounded-full px-2 py-1.5 text-center text-[11px] font-semibold transition-colors duration-150 whitespace-nowrap sm:px-3.5 sm:text-xs ${
                 activeChapter === idx
                   ? 'bg-[var(--accent-blue)] text-white shadow-sm'
                   : 'text-[var(--sub)] hover:text-[var(--ink)]'
               }`}
             >
-              {label}
+              <span className="sm:hidden">{item.short}</span>
+              <span className="hidden sm:inline">{item.full}</span>
             </button>
           ))}
         </div>
       </div>
 
-      <div className="mt-16 space-y-28">
+      <div className="mt-12 space-y-16 sm:mt-16 sm:space-y-28">
         {/* ============================================================
             CHAPTER 01: LEFT NARRATIVE -> RIGHT FLOATING STUDIO
             ============================================================ */}
         <div id="chap-0">
           <ScrollReveal>
-            <div className="apple-glass overflow-hidden rounded-[36px] p-7 sm:p-12 lg:p-14">
-              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+            <div className="apple-glass overflow-hidden rounded-[28px] p-5 sm:rounded-[36px] sm:p-10 lg:p-14">
+              <div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-12">
                 {/* Left Narrative */}
                 <div className="lg:col-span-5">
                   <div className="flex flex-wrap items-center gap-2.5 text-xs font-semibold">
@@ -139,7 +140,7 @@ export default function FlagshipScrollChapters({
                     <span className="bdg available">Available</span>
                   </div>
 
-                  <h3 className="mt-4 font-display text-3xl font-bold leading-[1.08] text-[var(--ink)] sm:text-4xl">
+                  <h3 className="mt-4 font-display text-2xl font-bold leading-[1.08] text-[var(--ink)] sm:text-4xl">
                     One studio packshot in. <span className="ac">Full campaign out.</span>
                   </h3>
 
@@ -147,24 +148,24 @@ export default function FlagshipScrollChapters({
                     Traditional photo shoots take weeks and cost $185+ per SKU. <strong className="text-[var(--ink)]">Catalog AI Studio &amp; AI Product Imagery</strong> turn one flat-lay photo into on-model imagery, lifestyle scenes, and channel-ready crops in 48 hours.
                   </p>
 
-                  <div className="mt-7 grid grid-cols-3 gap-3">
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--accent-cyan)] sm:text-2xl">
+                  <div className="mt-6 grid grid-cols-3 gap-2 sm:mt-7 sm:gap-3">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--accent-cyan)] sm:text-2xl">
                         ~90%
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Lower photo cost</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Lower photo cost</div>
                     </div>
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--ink)] sm:text-2xl">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--ink)] sm:text-2xl">
                         48 hrs
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Turnaround</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Turnaround</div>
                     </div>
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--ink)] sm:text-2xl">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--ink)] sm:text-2xl">
                         4×
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Channel crops</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Channel crops</div>
                     </div>
                   </div>
 
@@ -187,30 +188,32 @@ export default function FlagshipScrollChapters({
 
                 {/* Right Floating Interactive Studio */}
                 <div className="lg:col-span-7">
-                  <div className="glass-well rounded-[28px] p-6 sm:p-8">
+                  <div className="glass-well rounded-[22px] p-4 sm:rounded-[28px] sm:p-8">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div className="inline-flex rounded-full bg-[var(--bg-void)]/40 p-1.5 text-xs font-semibold shadow-inner">
+                      <div className="grid w-full grid-cols-2 rounded-full bg-[var(--bg-void)]/40 p-1 text-[11px] font-semibold shadow-inner sm:inline-flex sm:w-auto sm:p-1.5 sm:text-xs">
                         <button
                           onMouseEnter={() => setImageryMode('before')}
                           onClick={() => setImageryMode('before')}
-                          className={`rounded-full px-4 py-1.5 transition-all duration-300 ${
+                          className={`truncate rounded-full px-2.5 py-1.5 transition-all duration-300 sm:px-4 ${
                             imageryMode === 'before'
                               ? 'bg-rose-500 text-white shadow-md'
                               : 'text-[var(--sub)] hover:text-[var(--ink)]'
                           }`}
                         >
-                          Before: Raw Packshot
+                          <span className="sm:hidden">Before: Raw Shot</span>
+                          <span className="hidden sm:inline">Before: Raw Packshot</span>
                         </button>
                         <button
                           onMouseEnter={() => setImageryMode('after')}
                           onClick={() => setImageryMode('after')}
-                          className={`rounded-full px-4 py-1.5 transition-all duration-300 ${
+                          className={`truncate rounded-full px-2.5 py-1.5 transition-all duration-300 sm:px-4 ${
                             imageryMode === 'after'
                               ? 'bg-[var(--accent-blue)] text-white shadow-md'
                               : 'text-[var(--sub)] hover:text-[var(--ink)]'
                           }`}
                         >
-                          After: MOAR AI Studio
+                          <span className="sm:hidden">After: AI Studio</span>
+                          <span className="hidden sm:inline">After: MOAR AI Studio</span>
                         </button>
                       </div>
                       <span className="text-[11px] font-medium text-[var(--mut)]">
@@ -316,34 +319,36 @@ export default function FlagshipScrollChapters({
             ============================================================ */}
         <div id="chap-1">
           <ScrollReveal>
-            <div className="apple-glass overflow-hidden rounded-[36px] p-7 sm:p-12 lg:p-14">
-              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+            <div className="apple-glass overflow-hidden rounded-[28px] p-5 sm:rounded-[36px] sm:p-10 lg:p-14">
+              <div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-12">
                 {/* Left Floating Studio */}
                 <div className="order-2 lg:order-1 lg:col-span-7">
-                  <div className="glass-well rounded-[28px] p-6 sm:p-8">
+                  <div className="glass-well rounded-[22px] p-4 sm:rounded-[28px] sm:p-8">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div className="inline-flex rounded-full bg-[var(--bg-void)]/40 p-1.5 text-xs font-semibold shadow-inner">
+                      <div className="grid w-full grid-cols-2 rounded-full bg-[var(--bg-void)]/40 p-1 text-[11px] font-semibold shadow-inner sm:inline-flex sm:w-auto sm:p-1.5 sm:text-xs">
                         <button
                           onMouseEnter={() => setCatalogMode('before')}
                           onClick={() => setCatalogMode('before')}
-                          className={`rounded-full px-4 py-1.5 transition-all duration-300 ${
+                          className={`truncate rounded-full px-2.5 py-1.5 transition-all duration-300 sm:px-4 ${
                             catalogMode === 'before'
                               ? 'bg-rose-500 text-white shadow-md'
                               : 'text-[var(--sub)] hover:text-[var(--ink)]'
                           }`}
                         >
-                          Before: Raw Vendor CSV
+                          <span className="sm:hidden">Before: Raw CSV</span>
+                          <span className="hidden sm:inline">Before: Raw Vendor CSV</span>
                         </button>
                         <button
                           onMouseEnter={() => setCatalogMode('after')}
                           onClick={() => setCatalogMode('after')}
-                          className={`rounded-full px-4 py-1.5 transition-all duration-300 ${
+                          className={`truncate rounded-full px-2.5 py-1.5 transition-all duration-300 sm:px-4 ${
                             catalogMode === 'after'
                               ? 'bg-[var(--accent-blue)] text-white shadow-md'
                               : 'text-[var(--sub)] hover:text-[var(--ink)]'
                           }`}
                         >
-                          After: Enriched PDP Record
+                          <span className="sm:hidden">After: Enriched PDP</span>
+                          <span className="hidden sm:inline">After: Enriched PDP Record</span>
                         </button>
                       </div>
                       <span className="font-mono text-[11px] text-[var(--mut)]">
@@ -419,7 +424,7 @@ export default function FlagshipScrollChapters({
                     <span className="bdg available">Available</span>
                   </div>
 
-                  <h3 className="mt-4 font-display text-3xl font-bold leading-[1.08] text-[var(--ink)] sm:text-4xl">
+                  <h3 className="mt-4 font-display text-2xl font-bold leading-[1.08] text-[var(--ink)] sm:text-4xl">
                     Raw supplier sheets. <span className="ac">Ranked product pages.</span>
                   </h3>
 
@@ -427,24 +432,24 @@ export default function FlagshipScrollChapters({
                     Thin product pages neither rank in search nor convert shoppers. <strong className="text-[var(--ink)]">AI Catalog Intelligence &amp; PDP Enrichment</strong> inspect product images and raw vendor rows to extract 20+ attributes, map taxonomy, and score readiness in seconds.
                   </p>
 
-                  <div className="mt-7 grid grid-cols-3 gap-3">
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--accent-cyan)] sm:text-2xl">
+                  <div className="mt-6 grid grid-cols-3 gap-2 sm:mt-7 sm:gap-3">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--accent-cyan)] sm:text-2xl">
                         98%
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Attribute fill</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Attribute fill</div>
                     </div>
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--ink)] sm:text-2xl">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--ink)] sm:text-2xl">
                         10×
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Faster setup</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Faster setup</div>
                     </div>
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--ink)] sm:text-2xl">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--ink)] sm:text-2xl">
                         94/100
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Avg. QA score</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Avg. QA score</div>
                     </div>
                   </div>
 
@@ -474,7 +479,7 @@ export default function FlagshipScrollChapters({
             ============================================================ */}
         <div id="chap-2">
           <ScrollReveal>
-            <div className="apple-glass overflow-hidden rounded-[36px] p-7 sm:p-12 lg:p-14">
+            <div className="apple-glass overflow-hidden rounded-[28px] p-5 sm:rounded-[36px] sm:p-10 lg:p-14">
               <div className="mx-auto max-w-3xl text-center">
                 <div className="inline-flex flex-wrap items-center justify-center gap-2.5 text-xs font-semibold">
                   <span className="font-mono text-[var(--accent-cyan)]">03 / 04</span>
@@ -482,7 +487,7 @@ export default function FlagshipScrollChapters({
                   <span className="bdg pilot">Client Pilot</span>
                 </div>
 
-                <h3 className="mt-4 font-display text-3xl font-bold leading-[1.08] text-[var(--ink)] sm:text-5xl">
+                <h3 className="mt-4 font-display text-2xl font-bold leading-[1.08] text-[var(--ink)] sm:text-5xl">
                   Every shelf optimized for <span className="ac">local store demand.</span>
                 </h3>
 
@@ -491,31 +496,33 @@ export default function FlagshipScrollChapters({
                 </p>
               </div>
 
-              <div className="mt-10">
-                <div className="glass-well mx-auto max-w-4xl rounded-[28px] p-6 sm:p-8">
+              <div className="mt-8 sm:mt-10">
+                <div className="glass-well mx-auto max-w-4xl rounded-[22px] p-4 sm:rounded-[28px] sm:p-8">
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="inline-flex rounded-full bg-[var(--bg-void)]/40 p-1.5 text-xs font-semibold shadow-inner">
+                    <div className="grid w-full grid-cols-2 rounded-full bg-[var(--bg-void)]/40 p-1 text-[11px] font-semibold shadow-inner sm:inline-flex sm:w-auto sm:p-1.5 sm:text-xs">
                       <button
                         onMouseEnter={() => setPlanoMode('before')}
                         onClick={() => setPlanoMode('before')}
-                        className={`rounded-full px-4 py-1.5 transition-all duration-300 ${
+                        className={`truncate rounded-full px-2.5 py-1.5 transition-all duration-300 sm:px-4 ${
                           planoMode === 'before'
                             ? 'bg-rose-500 text-white shadow-md'
                             : 'text-[var(--sub)] hover:text-[var(--ink)]'
                         }`}
                       >
-                        Before: Static National Bay
+                        <span className="sm:hidden">Before: Static Bay</span>
+                        <span className="hidden sm:inline">Before: Static National Bay</span>
                       </button>
                       <button
                         onMouseEnter={() => setPlanoMode('after')}
                         onClick={() => setPlanoMode('after')}
-                        className={`rounded-full px-4 py-1.5 transition-all duration-300 ${
+                        className={`truncate rounded-full px-2.5 py-1.5 transition-all duration-300 sm:px-4 ${
                           planoMode === 'after'
                             ? 'bg-[var(--accent-blue)] text-white shadow-md'
                             : 'text-[var(--sub)] hover:text-[var(--ink)]'
                         }`}
                       >
-                        After: Cluster-Optimized Bay
+                        <span className="sm:hidden">After: Cluster Bay</span>
+                        <span className="hidden sm:inline">After: Cluster-Optimized Bay</span>
                       </button>
                     </div>
 
@@ -618,8 +625,8 @@ export default function FlagshipScrollChapters({
             ============================================================ */}
         <div id="chap-3">
           <ScrollReveal>
-            <div className="apple-glass overflow-hidden rounded-[36px] p-7 sm:p-12 lg:p-14">
-              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+            <div className="apple-glass overflow-hidden rounded-[28px] p-5 sm:rounded-[36px] sm:p-10 lg:p-14">
+              <div className="grid grid-cols-1 items-center gap-8 sm:gap-12 lg:grid-cols-12">
                 {/* Left Narrative */}
                 <div className="lg:col-span-5">
                   <div className="flex flex-wrap items-center gap-2.5 text-xs font-semibold">
@@ -628,7 +635,7 @@ export default function FlagshipScrollChapters({
                     <span className="powered">Powered by Propheus</span>
                   </div>
 
-                  <h3 className="mt-4 font-display text-3xl font-bold leading-[1.08] text-[var(--ink)] sm:text-4xl">
+                  <h3 className="mt-4 font-display text-2xl font-bold leading-[1.08] text-[var(--ink)] sm:text-4xl">
                     Score every micro-market <span className="ac">before you sign a lease.</span>
                   </h3>
 
@@ -636,24 +643,24 @@ export default function FlagshipScrollChapters({
                     Legacy expansion relies on stale 5km census averages. <strong className="text-[var(--ink)]">Geo-Intelligence &amp; Catchment Analytics</strong> fuse 250+ multimodal signals across every 1.2 × 0.6 km grid cell to find high-converting store locations without cannibalizing existing outlets.
                   </p>
 
-                  <div className="mt-7 grid grid-cols-3 gap-3">
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--accent-cyan)] sm:text-2xl">
+                  <div className="mt-6 grid grid-cols-3 gap-2 sm:mt-7 sm:gap-3">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--accent-cyan)] sm:text-2xl">
                         250+
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Live signals</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Live signals</div>
                     </div>
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--ink)] sm:text-2xl">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--ink)] sm:text-2xl">
                         +23%
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Viable zones</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Viable zones</div>
                     </div>
-                    <div className="glass-well rounded-2xl p-3.5">
-                      <div className="font-display text-xl font-bold text-[var(--ink)] sm:text-2xl">
+                    <div className="glass-well rounded-2xl p-2.5 sm:p-3.5">
+                      <div className="whitespace-nowrap font-display text-lg font-bold text-[var(--ink)] sm:text-2xl">
                         +15%
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--sub)]">Store revenue</div>
+                      <div className="mt-0.5 text-[10.5px] leading-tight text-[var(--sub)] sm:text-[11px]">Store revenue</div>
                     </div>
                   </div>
 
@@ -676,7 +683,7 @@ export default function FlagshipScrollChapters({
 
                 {/* Right Interactive Floating Grid (Hover-responsive cells) */}
                 <div className="lg:col-span-7">
-                  <div className="glass-well rounded-[28px] p-6 sm:p-8">
+                  <div className="glass-well rounded-[22px] p-4 sm:rounded-[28px] sm:p-8">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="text-xs font-semibold text-[var(--ink)]">
                         Interactive 1.2 × 0.6 km Digital Atlas Grid — Hover any block:

@@ -9,7 +9,6 @@ import {
   ArrowDown,
   Layers,
   Sparkles,
-  Compass,
   Calendar,
   MessageCircle,
   SunMoon,
@@ -22,8 +21,7 @@ export type PaletteAction =
   | { type: 'solution'; id: string }
   | { type: 'section'; id: string }
   | { type: 'request'; kind: string }
-  | { type: 'theme' }
-  | { type: 'prd' };
+  | { type: 'theme' };
 
 interface CommandPaletteProps {
   open: boolean;
@@ -106,14 +104,6 @@ const ACTION_ITEMS: Item[] = [
     icon: <SunMoon className="h-4 w-4" />,
     haystack: 'theme dark light appearance mode',
     action: { type: 'theme' },
-  },
-  {
-    key: 'act-prd',
-    group: 'Actions',
-    title: 'Open Phase 1 PRD & project plan',
-    icon: <Compass className="h-4 w-4" />,
-    haystack: 'prd plan project phase product requirements',
-    action: { type: 'prd' },
   },
 ];
 

@@ -355,7 +355,7 @@ button {
 }
 
 /* ------------------------------------------------------------------
-   Scroll Reveal — crisp, zero-blur, fast expo-out entrance
+   Scroll Reveal — subtle motion blur + fast expo-out entrance
    ------------------------------------------------------------------ */
 :root {
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
@@ -365,11 +365,13 @@ button {
 .reveal-outer {
   transition:
     opacity 0.42s var(--ease-out-expo),
-    transform 0.48s var(--ease-out-expo);
+    transform 0.48s var(--ease-out-expo),
+    filter 0.38s var(--ease-out-expo);
 }
 
 .reveal-hidden {
   opacity: 0;
+  filter: blur(3.5px);
   transform: translate3d(0, 18px, 0);
 }
 .reveal-hidden[data-variant="left"] {
@@ -387,7 +389,63 @@ button {
 
 .reveal-visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  filter: none;
+  transform: none;
+}
+
+/* Progressive top & bottom scroll-blur veils while scrolling down */
+.scroll-blur-top {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 92px;
+  z-index: 40;
+  pointer-events: none;
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.55) 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.55) 55%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.scroll-blur-top[data-active="true"] {
+  opacity: 1;
+}
+
+.scroll-blur-bottom {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: 52px;
+  z-index: 35;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.scroll-blur-bottom[data-active="true"] {
+  opacity: 1;
+}
+
+/* Custom-styled select pills with inset chevron (fixes clipped native arrow) */
+.select-pill {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.35rem !important;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238496B8' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-size: 14px 14px;
+}
+[data-theme="daylight"] .select-pill {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%233d4f7c' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+.select-pill option {
+  background-color: var(--bg-elevated);
+  color: var(--ink);
 }
 
 /* Staggered children: add `stagger` to any grid inside a ScrollReveal */

@@ -59,8 +59,8 @@ export default function SolutionDetailView({
       </div>
 
       {/* Hero Header — Borderless Shadow Glass */}
-      <ScrollReveal scaleFrom={0.93} parallaxY={18} className="mt-8">
-        <div className="apple-glass rounded-[36px] p-8 sm:p-12">
+      <ScrollReveal scaleFrom={0.93} parallaxY={18} className="mt-6 sm:mt-8">
+        <div className="apple-glass rounded-[28px] p-5 sm:rounded-[36px] sm:p-12">
           <div className="flex flex-wrap items-center gap-2.5 text-xs font-semibold">
             <span className="uppercase tracking-wider text-[var(--accent-cyan)]">
               {DOMAINS[s.domain]}
@@ -134,7 +134,7 @@ export default function SolutionDetailView({
       {/* Executive Briefing Case Study — Shadow Elevated Cards Instead of Divider Lines */}
       {c && (
         <ScrollReveal delayMs={100} scaleFrom={0.93} parallaxY={22}>
-          <div className="apple-glass mt-10 rounded-[36px] p-8 sm:p-12">
+          <div className="apple-glass mt-10 rounded-[28px] p-5 sm:rounded-[36px] sm:p-12">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <div className="text-xs font-semibold uppercase tracking-wider text-[var(--accent-cyan)]">
@@ -203,7 +203,7 @@ export default function SolutionDetailView({
       {/* Related Solutions ("Works together with") */}
       {s.related && s.related.length > 0 && (
         <ScrollReveal delayMs={130} parallaxY={16}>
-          <div className="apple-glass mt-10 rounded-[32px] p-7 sm:p-9">
+          <div className="apple-glass mt-10 rounded-[28px] p-5 sm:rounded-[32px] sm:p-9">
             <div className="text-xs font-semibold uppercase tracking-wider text-[var(--mut)]">
               Connected Capabilities · Works Together With
             </div>
@@ -233,7 +233,7 @@ export default function SolutionDetailView({
 
       {/* Next Step Engagement Panel */}
       <ScrollReveal delayMs={160} scaleFrom={0.93} parallaxY={20}>
-        <div className="apple-glass mt-10 grid grid-cols-1 gap-8 rounded-[36px] p-8 sm:p-12 lg:grid-cols-12 lg:items-center">
+        <div className="apple-glass mt-10 grid grid-cols-1 gap-6 rounded-[28px] p-5 sm:gap-8 sm:rounded-[36px] sm:p-12 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-7">
             <div className="text-xs font-semibold uppercase tracking-widest text-[var(--accent-cyan)]">
               Next step

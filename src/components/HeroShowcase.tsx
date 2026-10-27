@@ -28,6 +28,7 @@ const HERO_MODES = [
     id: 'catalog_ai',
     code: '01',
     pill: 'AI Product Imagery',
+    shortPill: 'AI Imagery',
     stage: 'Stage 05 · Catalog',
     badge: 'Available Now',
     headline: '1 Packshot In → Full Studio Campaign Out',
@@ -40,6 +41,7 @@ const HERO_MODES = [
     id: 'ai_catalog_intel',
     code: '02',
     pill: 'AI Catalog Intelligence',
+    shortPill: 'Catalog Intel',
     stage: 'Stage 05 & 06 · Catalog & Marketplace',
     badge: 'Available Now',
     headline: 'Raw Vendor Row → 98% Enriched PDP',
@@ -52,6 +54,7 @@ const HERO_MODES = [
     id: 'space_planning',
     code: '03',
     pill: 'Space & Planograms',
+    shortPill: 'Planograms',
     stage: 'Stage 02 & 04 · Plan & Merchandise',
     badge: 'Client Pilot',
     headline: 'Cluster-Specific Shelf & Bay Optimization',
@@ -64,6 +67,7 @@ const HERO_MODES = [
     id: 'geo_intel',
     code: '04',
     pill: 'Geo-Intelligence',
+    shortPill: 'Geo-Intel',
     stage: 'Stage 01 & 02 · Discover & Plan',
     badge: 'Powered by Propheus',
     headline: '1.2 × 0.6 km Digital Atlas Site Scoring',
@@ -170,7 +174,7 @@ export default function HeroShowcase({
   return (
     <section
       ref={heroRef}
-      className="relative mx-auto max-w-[1260px] overflow-hidden px-5 pt-28 pb-16 sm:px-7 sm:pt-36 2xl:max-w-[1560px]"
+      className="relative mx-auto max-w-[1260px] overflow-hidden px-5 pt-28 pb-16 sm:px-7 sm:pt-36 2xl:max-w-[1640px]"
     >
       {/* Subtle Perspective Architectural Grid + Center Horizon Glow */}
       <div
@@ -196,7 +200,7 @@ export default function HeroShowcase({
       {/* Top Split: Editorial Copy + Quick Telemetry */}
       <div className="mx-auto max-w-4xl text-center">
         {/* Live OS Status Pill */}
-        <div style={{ ['--d' as string]: '20ms' }} className="hero-in glass-well inline-flex flex-wrap items-center justify-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold">
+        <div style={{ ['--d' as string]: '20ms' }} className="hero-in glass-well inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 rounded-2xl px-4 py-2 text-xs font-semibold sm:rounded-full sm:py-1.5">
           <span className="inline-flex items-center gap-2 text-[var(--accent-cyan)]">
             <img
               src="/moar-logo-white.png"
@@ -212,38 +216,38 @@ export default function HeroShowcase({
           </span>
           <span className="opacity-30">|</span>
           <span className="text-[var(--ink)]">9 Lifecycle Stages</span>
-          <span className="opacity-30">·</span>
+          <span className="hidden opacity-30 sm:inline">·</span>
           <span className="text-[var(--sub)]">26 Productized Capabilities</span>
         </div>
 
         {/* Sculpted Hero Headline */}
-        <h1 style={{ ['--d' as string]: '60ms' }} className="hero-in mx-auto mt-6 max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-tight text-[var(--ink)] sm:text-6xl lg:text-[74px]">
+        <h1 style={{ ['--d' as string]: '60ms' }} className="hero-in mx-auto mt-6 max-w-[16ch] font-display text-[32px] font-bold leading-[1.06] tracking-tight text-[var(--ink)] sm:text-6xl sm:leading-[1.02] lg:text-[74px]">
           The operating system for{' '}
           <span className="ac">retail transformation.</span>
         </h1>
 
-        <p style={{ ['--d' as string]: '110ms' }} className="hero-in mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[var(--sub)] sm:text-lg">
+        <p style={{ ['--d' as string]: '110ms' }} className="hero-in mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-[var(--sub)] sm:text-lg">
           Advisory, AI, and operational accelerators unified into one guided platform. Hover across the live command deck below to preview how MOAR transforms catalog, space, location, and store operations.
         </p>
 
         {/* Primary Action Row */}
-        <div style={{ ['--d' as string]: '150ms' }} className="hero-in mt-8 flex flex-wrap items-center justify-center gap-3.5">
+        <div style={{ ['--d' as string]: '150ms' }} className="hero-in mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3.5">
           <button
             onClick={() => onScrollTo('flagshipSec')}
-            className="btn btn-pri px-7 py-3.5 text-sm"
+            className="btn btn-pri w-full px-7 py-3.5 text-sm sm:w-auto"
           >
             <span>Explore interactive demos</span>
             <ArrowRight className="h-4 w-4" />
           </button>
           <button
             onClick={() => onScrollTo('valuechain')}
-            className="btn btn-gho px-6 py-3.5 text-sm"
+            className="btn btn-gho w-full px-6 py-3.5 text-sm sm:w-auto"
           >
             <span>Browse 9 retail stages</span>
           </button>
           <button
             onClick={() => onOpenRequest(null, 'workshop')}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-[var(--accent-cyan)] transition hover:translate-x-0.5"
+            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-[var(--accent-cyan)] transition hover:translate-x-0.5"
           >
             <span>Book an operator workshop</span>
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -260,9 +264,9 @@ export default function HeroShowcase({
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <div className="mx-auto grid max-w-[1000px] grid-cols-1 gap-5 md:grid-cols-2 2xl:max-w-none 2xl:grid-cols-[250px_minmax(0,1fr)_250px] 2xl:gap-7">
+        <div className="mx-auto grid max-w-[1040px] grid-cols-1 gap-5 md:grid-cols-2 2xl:max-w-none 2xl:grid-cols-[232px_minmax(0,1fr)_232px] 2xl:gap-5">
         {/* LEFT SATELLITE — own column on wide screens, row below the deck otherwise */}
-        <div className="order-2 hidden md:block 2xl:order-none 2xl:mt-20 2xl:self-start">
+        <div className="order-2 2xl:order-none 2xl:mt-20 2xl:self-start">
           <div ref={leftCardRef} className="h-full transition-transform duration-75">
             <div className="float-slow h-full">
               <div className="apple-glass relative h-full overflow-hidden rounded-[26px] p-5">
@@ -318,7 +322,7 @@ export default function HeroShowcase({
         </div>
 
         {/* RIGHT SATELLITE */}
-        <div className="order-3 hidden md:block 2xl:order-last 2xl:mb-16 2xl:self-end">
+        <div className="order-3 2xl:order-last 2xl:mb-16 2xl:self-end">
           <div ref={rightCardRef} className="h-full transition-transform duration-75">
             <div className="float-slower h-full">
               <div className="apple-glass relative h-full overflow-hidden rounded-[26px] p-5">
@@ -362,22 +366,22 @@ export default function HeroShowcase({
         {/* MAIN INTERACTIVE OS COMMAND DECK */}
         <div
           ref={mainDeckRef}
-          className="apple-glass order-1 overflow-hidden rounded-[34px] p-3 transition-transform duration-75 sm:p-5 md:col-span-2 2xl:order-none 2xl:col-span-1"
+          className="apple-glass order-1 overflow-hidden rounded-[28px] p-3 transition-transform duration-75 sm:rounded-[34px] sm:p-5 md:col-span-2 2xl:order-none 2xl:col-span-1"
         >
           {/* OS Top Window Bar + Hover Mode Switcher Pills */}
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] bg-[var(--bg-void)]/45 px-4 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2.5 rounded-[20px] bg-[var(--bg-void)]/45 px-3 py-2.5 sm:gap-3 sm:rounded-[24px] sm:px-4 sm:py-3">
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-rose-500/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
-              <span className="ml-2 font-mono text-[11px] font-medium text-[var(--mut)] hidden sm:inline">
+              <span className="ml-1.5 font-mono text-[10.5px] font-medium text-[var(--mut)] sm:ml-2 sm:text-[11px]">
                 moar.retailos // priority-preview
               </span>
             </div>
 
             {/* 4 Hover-Activated OS Mode Tabs with Synchronized Pill */}
             <div
-              className="relative grid grid-cols-2 gap-1 rounded-full bg-[var(--surface-1)] p-1 sm:grid-cols-4"
+              className="relative grid w-full grid-cols-2 gap-1 rounded-2xl bg-[var(--surface-1)] p-1 sm:w-auto sm:grid-cols-4 sm:rounded-full"
               role="tablist"
               aria-label="Priority OS modes"
             >
@@ -398,14 +402,15 @@ export default function HeroShowcase({
                     aria-selected={on}
                     onMouseEnter={() => setActiveIdx(idx)}
                     onClick={() => setActiveIdx(idx)}
-                    className={`relative z-10 min-w-0 truncate rounded-full px-3 py-1.5 text-center text-[11px] font-semibold transition-colors duration-150 whitespace-nowrap ${
+                    className={`relative z-10 min-w-0 truncate rounded-xl px-2.5 py-1.5 text-center text-[11px] font-semibold transition-colors duration-150 whitespace-nowrap sm:rounded-full sm:px-3 ${
                       on
                         ? 'bg-[var(--accent-blue)] text-white shadow-sm'
                         : 'text-[var(--sub)] hover:text-[var(--ink)]'
                     }`}
                   >
                     <span className="mr-1 font-mono opacity-75">{m.code}</span>
-                    {m.pill}
+                    <span className="sm:hidden">{m.shortPill}</span>
+                    <span className="hidden sm:inline">{m.pill}</span>
                   </button>
                 );
               })}
@@ -415,7 +420,7 @@ export default function HeroShowcase({
           {/* Dynamic OS Stage Body */}
           <div
             key={currentMode.id}
-            className="stage-content-transition mt-3 grid grid-cols-1 items-center gap-6 rounded-[26px] bg-[var(--bg-void)]/30 p-6 sm:p-8 lg:grid-cols-12"
+            className="stage-content-transition mt-3 grid grid-cols-1 items-center gap-5 rounded-[22px] bg-[var(--bg-void)]/30 p-4 sm:rounded-[26px] sm:p-7 lg:grid-cols-12"
           >
             {/* Left Column: Selected Priority Mode Summary & Live Telemetry */}
             <div className="lg:col-span-5">
@@ -466,55 +471,55 @@ export default function HeroShowcase({
             {/* Right Column: Bespoke Visual Simulation for Each Mode */}
             <div className="lg:col-span-7">
               {currentMode.id === 'catalog_ai' && (
-                <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-12 sm:items-center">
+                <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-[118px_16px_minmax(0,1fr)] sm:items-stretch">
                   {/* Input Packshot Card */}
-                  <div className="glass-well rounded-2xl p-4 text-center sm:col-span-4">
-                    <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-rose-300">
+                  <div className="glass-well flex flex-col items-center justify-between rounded-2xl p-3 text-center">
+                    <span className="whitespace-nowrap rounded-full bg-rose-500/15 px-2 py-0.5 text-[9.5px] font-semibold text-rose-300">
                       Input · Raw Shot
                     </span>
-                    <div className="my-4 flex h-24 items-center justify-center rounded-xl bg-[var(--bg-void)]/40">
-                      <ImageIcon className="h-8 w-8 text-[var(--mut)]" />
+                    <div className="my-2.5 flex h-20 w-full items-center justify-center rounded-xl bg-[var(--bg-void)]/40">
+                      <ImageIcon className="h-6 w-6 text-[var(--mut)]" />
                     </div>
-                    <div className="font-mono text-[10px] text-[var(--sub)]">
+                    <div className="whitespace-nowrap font-mono text-[9.5px] text-[var(--sub)]">
                       1 Studio Flat-Lay
                     </div>
                   </div>
 
                   {/* Animated Flow Arrow */}
-                  <div className="flex justify-center sm:col-span-1">
-                    <ArrowRight className="h-5 w-5 text-[var(--accent-cyan)] rotate-90 sm:rotate-0" />
+                  <div className="flex items-center justify-center">
+                    <ArrowRight className="h-4 w-4 text-[var(--accent-cyan)] rotate-90 sm:rotate-0" />
                   </div>
 
                   {/* Output Multi-Format Campaign Grid */}
-                  <div className="glass-well space-y-2.5 rounded-2xl p-4 sm:col-span-7">
-                    <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-400">
+                  <div className="glass-well flex flex-col justify-between space-y-2.5 rounded-2xl p-3.5">
+                    <div className="flex flex-wrap items-center justify-between gap-1.5">
+                      <span className="whitespace-nowrap rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-400">
                         MOAR AI Studio Output
                       </span>
-                      <span className="font-mono text-[10px] text-[var(--accent-cyan)]">
+                      <span className="whitespace-nowrap font-mono text-[10px] font-semibold text-[var(--accent-cyan)]">
                         1:1 · 4:5 · 9:16 · 16:9
                       </span>
                     </div>
-                    <div className="grid grid-cols-2 gap-2.5 pt-1">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                       <div className="rounded-xl bg-[var(--accent-blue)]/20 p-3">
-                        <div className="text-[10px] font-semibold text-[var(--accent-cyan)]">
+                        <div className="whitespace-nowrap text-[10px] font-semibold text-[var(--accent-cyan)]">
                           On-Model Editorial
                         </div>
-                        <div className="mt-1 text-xs font-bold text-[var(--ink)]">
+                        <div className="mt-1 whitespace-nowrap text-[11px] font-bold text-[var(--ink)]">
                           Drape &amp; Weave Locked
                         </div>
-                        <div className="mt-1 text-[10px] text-[var(--sub)]">
+                        <div className="mt-1 whitespace-nowrap text-[10px] text-[var(--sub)]">
                           Human QA verified
                         </div>
                       </div>
                       <div className="rounded-xl bg-emerald-500/15 p-3">
-                        <div className="text-[10px] font-semibold text-emerald-400">
+                        <div className="whitespace-nowrap text-[10px] font-semibold text-emerald-400">
                           Lifestyle + SEO Copy
                         </div>
-                        <div className="mt-1 text-xs font-bold text-[var(--ink)]">
+                        <div className="mt-1 whitespace-nowrap text-[11px] font-bold text-[var(--ink)]">
                           Listing-Ready Bundle
                         </div>
-                        <div className="mt-1 text-[10px] text-[var(--sub)]">
+                        <div className="mt-1 whitespace-nowrap text-[10px] text-[var(--sub)]">
                           96/100 Brand Score
                         </div>
                       </div>
@@ -603,8 +608,8 @@ export default function HeroShowcase({
               )}
 
               {currentMode.id === 'geo_intel' && (
-                <div className="glass-well rounded-2xl p-5">
-                  <div className="flex items-center justify-between text-xs">
+                <div className="glass-well rounded-2xl p-4 sm:p-5">
+                  <div className="flex flex-wrap items-center justify-between gap-1 text-xs">
                     <span className="font-semibold text-[var(--ink)]">
                       1.2 × 0.6 km Digital Atlas Catchment Scoring
                     </span>
@@ -612,7 +617,7 @@ export default function HeroShowcase({
                       7,000+ Districts Mapped
                     </span>
                   </div>
-                  <div className="mt-3 grid grid-cols-3 gap-2.5">
+                  <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5">
                     {[
                       { id: 'A1', name: 'Transit Hub', score: 84, tag: 'High Fit' },
                       { id: 'B2', name: 'Commuter Core', score: 94, tag: 'Prime Target', prime: true },
@@ -620,7 +625,7 @@ export default function HeroShowcase({
                     ].map((cell) => (
                       <div
                         key={cell.id}
-                        className={`rounded-xl p-3.5 ${
+                        className={`rounded-xl p-3 sm:p-3.5 ${
                           cell.prime
                             ? 'bg-[var(--accent-blue)] text-white shadow-lg'
                             : 'bg-[var(--bg-void)]/45 text-[var(--ink)]'

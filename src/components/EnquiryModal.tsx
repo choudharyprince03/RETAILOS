@@ -122,7 +122,7 @@ export default function EnquiryModal({
         className="fixed inset-0 bg-black/70 backdrop-blur-md transition-opacity"
         onClick={onClose}
       />
-      <div className="apple-glass relative z-10 w-full max-w-lg rounded-[32px] p-7 sm:p-9">
+      <div className="apple-glass relative z-10 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[26px] p-5 sm:rounded-[32px] sm:p-9">
         <button
           onClick={onClose}
           aria-label="Close"
@@ -237,7 +237,7 @@ export default function EnquiryModal({
                   id="reqInterest"
                   value={interest}
                   onChange={(e) => setInterest(e.target.value)}
-                  className="glass-well w-full rounded-2xl px-4 py-3 text-sm text-[var(--ink)] focus:outline-none"
+                  className="glass-well select-pill w-full rounded-2xl px-4 py-3 text-sm text-[var(--ink)] focus:outline-none"
                 >
                   <option value="MOAR RetailOS Platform">MOAR RetailOS Platform (General)</option>
                   {SOL.map((s) => (

@@ -27,7 +27,6 @@ import {
 import FlagshipScrollChapters from './FlagshipScrollChapters';
 import HeroShowcase from './HeroShowcase';
 import SolutionDetailView from './SolutionDetailView';
-import PmPrdWorkspace from './PmPrdWorkspace';
 import EnquiryModal from './EnquiryModal';
 import ScrollReveal, { subscribeScroll } from './ScrollReveal';
 import CommandPalette, { PaletteAction } from './CommandPalette';
@@ -35,7 +34,6 @@ import {
   Search,
   Sun,
   Moon,
-  Compass,
   Shield,
   Database,
   Server,
@@ -46,6 +44,8 @@ import {
   SlidersHorizontal,
   ArrowUp,
   Command,
+  ChevronDown,
+  Check,
 } from 'lucide-react';
 
 const NAV_HINTS = [
@@ -58,7 +58,6 @@ const NAV_HINTS = [
 ];
 
 export default function RetailOsApp() {
-  const [activeTab, setActiveTab] = useState<'showcase' | 'pm_prd'>('showcase');
   const [selectedSolId, setSelectedSolId] = useState<string | null>(null);
   const [theme, setTheme] = useState<'slate' | 'daylight'>('slate');
 
@@ -83,6 +82,28 @@ export default function RetailOsApp() {
   const [paletteOpen, setPaletteOpen] = useState<boolean>(false);
   const [isMac, setIsMac] = useState<boolean>(true);
   const [hintIdx, setHintIdx] = useState<number>(0);
+
+  // Custom glass filter dropdowns (Role / Outcome)
+  const [openDropdown, setOpenDropdown] = useState<'role' | 'outcome' | null>(null);
+  const filterDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!openDropdown) return;
+    const onPointerDown = (e: MouseEvent) => {
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpenDropdown(null);
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [openDropdown]);
   const [q, setQ] = useState<string>('');
   const [outcome, setOutcome] = useState<OutcomeKey | ''>('');
   const [build, setBuild] = useState<'ai' | 'moar' | 'partner' | ''>('');
@@ -165,7 +186,7 @@ export default function RetailOsApp() {
       setShowTop(y > 1400);
       return false;
     });
-  }, [activeTab, selectedSolId]);
+  }, [selectedSolId]);
 
   // Live per-domain counts for the current filter set (drives the side TOC)
   const filteredCounts = useMemo(() => {
@@ -189,7 +210,7 @@ export default function RetailOsApp() {
 
   // Scroll-spy: highlight the section whose heading has crossed the top offset
   useEffect(() => {
-    if (selectedSolId || activeTab !== 'showcase') return;
+    if (selectedSolId) return;
     const OFFSET = 160;
     let raf = 0;
 
@@ -224,7 +245,7 @@ export default function RetailOsApp() {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [tocSections, selectedSolId, activeTab]);
+  }, [tocSections, selectedSolId]);
 
   // Keep the active pill visible in the mobile horizontal TOC
   useEffect(() => {
@@ -263,7 +284,6 @@ export default function RetailOsApp() {
 
   const openSol = (id: string) => {
     setSelectedSolId(id);
-    setActiveTab('showcase');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -287,15 +307,10 @@ export default function RetailOsApp() {
     else if (a.type === 'section') scrollToId(a.id);
     else if (a.type === 'request') openRequest(null, a.kind);
     else if (a.type === 'theme') setTheme((t) => (t === 'slate' ? 'daylight' : 'slate'));
-    else if (a.type === 'prd') {
-      setActiveTab('pm_prd');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
   };
 
   const scrollToId = (id: string) => {
     setSelectedSolId(null);
-    setActiveTab('showcase');
     setTimeout(() => {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -321,6 +336,10 @@ export default function RetailOsApp() {
       {/* Ambient Apple/Meta Mesh Glow */}
       <div className="ambient-mesh" aria-hidden="true" />
 
+      {/* Progressive Scroll-Blur Veils (top under navbar + bottom viewport edge) */}
+      <div className="scroll-blur-top" data-active={scrolled} aria-hidden="true" />
+      <div className="scroll-blur-bottom" data-active={scrolled} aria-hidden="true" />
+
       {/* Floating Liquid-Glass Navigation */}
       <header
         className={`fixed inset-x-0 z-40 mx-auto max-w-[1180px] px-3 transition-[top] duration-500 sm:px-4 ${
@@ -338,7 +357,6 @@ export default function RetailOsApp() {
           <button
             onClick={() => {
               setSelectedSolId(null);
-              setActiveTab('showcase');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             aria-label="MOAR RetailOS home"
@@ -354,16 +372,9 @@ export default function RetailOsApp() {
               alt="MOAR."
               className="moar-logo-dark h-4 w-auto object-contain transition-transform duration-500 group-hover:scale-[1.04] sm:h-5"
             />
-            <span className="h-4 w-px bg-[var(--line-2)]" aria-hidden="true" />
-            <span className="font-display text-[13px] font-semibold tracking-tight text-[var(--accent-cyan)] sm:text-sm">
+            <span className="hidden h-4 w-px bg-[var(--line-2)] min-[360px]:inline-block" aria-hidden="true" />
+            <span className="hidden font-display text-[13px] font-semibold tracking-tight text-[var(--accent-cyan)] min-[360px]:inline sm:text-sm">
               RetailOS
-            </span>
-            <span className="ml-1 hidden items-center gap-1.5 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-400 xl:inline-flex">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              </span>
-              Phase 1 Live
             </span>
           </button>
 
@@ -414,7 +425,7 @@ export default function RetailOsApp() {
 
             <button
               onClick={() => openRequest(null, 'general')}
-              className="btn btn-pri btn-shine btn-sm group"
+              className="btn btn-pri btn-shine btn-sm group px-3 py-1.5 text-xs sm:px-4 sm:py-2"
             >
               <span className="hidden sm:inline">Connect with us</span>
               <span className="sm:hidden">Connect</span>
@@ -423,7 +434,7 @@ export default function RetailOsApp() {
           </div>
 
           {/* Reading progress, tucked into the bottom edge of the pill */}
-          {activeTab === 'showcase' && !currentDetailSolution && (
+          {!currentDetailSolution && (
             <span ref={progressRef} className="nav-progress" aria-hidden="true" />
           )}
         </nav>
@@ -435,22 +446,8 @@ export default function RetailOsApp() {
         onAction={handlePalette}
       />
 
-      {/* VIEW 1: PM PRD & PROJECT PLAN WORKBENCH */}
-      {activeTab === 'pm_prd' && (
-        <div className="relative z-10 pt-24">
-          <PmPrdWorkspace
-            onOpenSolution={(id) => openSol(id)}
-            onSwitchToShowcase={() => {
-              setSelectedSolId(null);
-              setActiveTab('showcase');
-            }}
-            onOpenEnquiry={(capId, type) => openRequest(capId, type)}
-          />
-        </div>
-      )}
-
-      {/* VIEW 2: DEDICATED SOLUTION DETAIL VIEW */}
-      {activeTab === 'showcase' && currentDetailSolution && (
+      {/* VIEW 1: DEDICATED SOLUTION DETAIL VIEW */}
+      {currentDetailSolution && (
         <SolutionDetailView
           solution={currentDetailSolution}
           onBack={() => setSelectedSolId(null)}
@@ -459,8 +456,8 @@ export default function RetailOsApp() {
         />
       )}
 
-      {/* VIEW 3: APPLE / META SCROLL-STORYTELLING SHOWCASE */}
-      {activeTab === 'showcase' && !currentDetailSolution && (
+      {/* VIEW 2: APPLE / META SCROLL-STORYTELLING SHOWCASE */}
+      {!currentDetailSolution && (
         <main className="relative z-10">
           {/* ==============================================================
               1. CREATIVE SPATIAL COMMAND-DECK HERO
@@ -556,7 +553,7 @@ export default function RetailOsApp() {
               </div>
 
               {/* Smoothly Cross-Fading Stage Context & Solutions Preview Card */}
-              <div className="apple-glass mt-6 rounded-[32px] p-7 sm:p-9">
+              <div className="apple-glass mt-6 rounded-[26px] p-5 sm:rounded-[32px] sm:p-9">
                 <div
                   key={activeStageObj.key}
                   className="stage-content-transition"
@@ -635,7 +632,7 @@ export default function RetailOsApp() {
             id="explorerSec"
             className="mx-auto max-w-[1240px] px-5 py-24 sm:px-7"
           >
-            <ScrollReveal>
+            <ScrollReveal className="relative z-30">
               <div className="flex flex-wrap items-end justify-between gap-6">
                 <div className="max-w-2xl">
                   <div className="text-xs font-semibold uppercase tracking-widest text-[var(--accent-cyan)]">
@@ -651,7 +648,7 @@ export default function RetailOsApp() {
               </div>
 
               {/* Search & Filter Bar */}
-              <div className="apple-glass mt-10 rounded-[28px] p-3 sm:p-3.5">
+              <div className="apple-glass relative z-30 mt-10 rounded-[28px] p-3 sm:p-3.5">
                 <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center">
                   {/* Search Input */}
                   <label className="glass-well flex min-w-0 flex-1 items-center gap-3 rounded-full px-4 py-3">
@@ -674,50 +671,168 @@ export default function RetailOsApp() {
                     )}
                   </label>
 
-                  <div className="grid grid-cols-2 gap-2.5 sm:flex sm:items-center">
-                    {/* Role Selector */}
-                    <select
-                      aria-label="Filter by your role"
-                      value={role}
-                      onChange={(e) => {
-                        const val = e.target.value as RoleKey | '';
-                        setRole(val);
-                        if (val) setStage(null);
-                      }}
-                      className={`glass-well min-w-0 rounded-full px-4 py-3 text-xs font-medium focus:outline-none sm:min-w-[170px] ${
-                        role ? 'text-[var(--accent-cyan)]' : 'text-[var(--ink)]'
-                      }`}
-                    >
-                      <option value="">All Roles</option>
-                      {ROLES.map(([k, lbl]) => (
-                        <option key={k} value={k}>
-                          For {lbl}
-                        </option>
-                      ))}
-                    </select>
+                  <div
+                    ref={filterDropdownRef}
+                    className="grid grid-cols-2 gap-2.5 sm:flex sm:items-center"
+                  >
+                    {/* Custom Role Dropdown */}
+                    <div className="relative">
+                      <button
+                        type="button"
+                        aria-label="Filter by your role"
+                        aria-expanded={openDropdown === 'role'}
+                        onClick={() =>
+                          setOpenDropdown((prev) => (prev === 'role' ? null : 'role'))
+                        }
+                        className={`glass-well flex w-full items-center justify-between gap-2.5 rounded-full pl-4 pr-3.5 py-3 text-xs font-semibold transition hover:bg-[var(--surface-2)] sm:min-w-[178px] ${
+                          role ? 'text-[var(--accent-cyan)]' : 'text-[var(--ink)]'
+                        }`}
+                      >
+                        <span className="truncate">
+                          {role
+                            ? `For ${ROLES.find(([k]) => k === role)?.[1] ?? role}`
+                            : 'All Roles'}
+                        </span>
+                        <ChevronDown
+                          className={`h-3.5 w-3.5 shrink-0 text-[var(--mut)] transition-transform duration-200 ${
+                            openDropdown === 'role' ? 'rotate-180 text-[var(--ink)]' : ''
+                          }`}
+                        />
+                      </button>
 
-                    {/* Outcome Selector */}
-                    <select
-                      aria-label="Filter by business outcome"
-                      value={outcome}
-                      onChange={(e) => setOutcome(e.target.value as OutcomeKey | '')}
-                      className={`glass-well min-w-0 rounded-full px-4 py-3 text-xs font-medium focus:outline-none sm:min-w-[170px] ${
-                        outcome ? 'text-[var(--accent-cyan)]' : 'text-[var(--ink)]'
-                      }`}
-                    >
-                      <option value="">Any Outcome</option>
-                      {(Object.keys(OUT) as OutcomeKey[]).map((k) => (
-                        <option key={k} value={k}>
-                          {OUT[k].l}
-                        </option>
-                      ))}
-                    </select>
+                      {openDropdown === 'role' && (
+                        <div
+                          role="listbox"
+                          aria-label="Select role"
+                          className="apple-glass palette-panel absolute left-0 top-[calc(100%+8px)] z-50 w-[min(256px,calc(100vw-48px))] rounded-2xl p-1.5 shadow-2xl ring-1 ring-[var(--line-2)]"
+                        >
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected={role === ''}
+                            onClick={() => {
+                              setRole('');
+                              setOpenDropdown(null);
+                            }}
+                            className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-medium transition ${
+                              role === ''
+                                ? 'bg-[var(--accent-blue)] text-white'
+                                : 'text-[var(--ink)] hover:bg-[var(--surface-1)]'
+                            }`}
+                          >
+                            <span>All Roles</span>
+                            {role === '' && <Check className="h-3.5 w-3.5 shrink-0" />}
+                          </button>
+                          {ROLES.map(([k, lbl]) => {
+                            const selected = role === k;
+                            return (
+                              <button
+                                key={k}
+                                type="button"
+                                role="option"
+                                aria-selected={selected}
+                                onClick={() => {
+                                  setRole(k);
+                                  setStage(null);
+                                  setOpenDropdown(null);
+                                }}
+                                className={`mt-0.5 flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-medium transition ${
+                                  selected
+                                    ? 'bg-[var(--accent-blue)] text-white'
+                                    : 'text-[var(--ink)] hover:bg-[var(--surface-1)]'
+                                }`}
+                              >
+                                <span className="truncate">For {lbl}</span>
+                                {selected && <Check className="h-3.5 w-3.5 shrink-0" />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Custom Outcome Dropdown */}
+                    <div className="relative">
+                      <button
+                        type="button"
+                        aria-label="Filter by business outcome"
+                        aria-expanded={openDropdown === 'outcome'}
+                        onClick={() =>
+                          setOpenDropdown((prev) =>
+                            prev === 'outcome' ? null : 'outcome'
+                          )
+                        }
+                        className={`glass-well flex w-full items-center justify-between gap-2.5 rounded-full pl-4 pr-3.5 py-3 text-xs font-semibold transition hover:bg-[var(--surface-2)] sm:min-w-[178px] ${
+                          outcome ? 'text-[var(--accent-cyan)]' : 'text-[var(--ink)]'
+                        }`}
+                      >
+                        <span className="truncate">
+                          {outcome ? OUT[outcome].l : 'Any Outcome'}
+                        </span>
+                        <ChevronDown
+                          className={`h-3.5 w-3.5 shrink-0 text-[var(--mut)] transition-transform duration-200 ${
+                            openDropdown === 'outcome'
+                              ? 'rotate-180 text-[var(--ink)]'
+                              : ''
+                          }`}
+                        />
+                      </button>
+
+                      {openDropdown === 'outcome' && (
+                        <div
+                          role="listbox"
+                          aria-label="Select business outcome"
+                          className="apple-glass palette-panel absolute right-0 top-[calc(100%+8px)] z-50 w-[min(240px,calc(100vw-48px))] rounded-2xl p-1.5 shadow-2xl ring-1 ring-[var(--line-2)] sm:left-0 sm:right-auto"
+                        >
+                          <button
+                            type="button"
+                            role="option"
+                            aria-selected={outcome === ''}
+                            onClick={() => {
+                              setOutcome('');
+                              setOpenDropdown(null);
+                            }}
+                            className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-medium transition ${
+                              outcome === ''
+                                ? 'bg-[var(--accent-blue)] text-white'
+                                : 'text-[var(--ink)] hover:bg-[var(--surface-1)]'
+                            }`}
+                          >
+                            <span>Any Outcome</span>
+                            {outcome === '' && <Check className="h-3.5 w-3.5 shrink-0" />}
+                          </button>
+                          {(Object.keys(OUT) as OutcomeKey[]).map((k) => {
+                            const selected = outcome === k;
+                            return (
+                              <button
+                                key={k}
+                                type="button"
+                                role="option"
+                                aria-selected={selected}
+                                onClick={() => {
+                                  setOutcome(k);
+                                  setOpenDropdown(null);
+                                }}
+                                className={`mt-0.5 flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-medium transition ${
+                                  selected
+                                    ? 'bg-[var(--accent-blue)] text-white'
+                                    : 'text-[var(--ink)] hover:bg-[var(--surface-1)]'
+                                }`}
+                              >
+                                <span className="truncate">{OUT[k].l}</span>
+                                {selected && <Check className="h-3.5 w-3.5 shrink-0" />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
 
                     {/* Toggle Extra Build Chips */}
                     <button
                       onClick={() => setShowMoreFilters((prev) => !prev)}
                       aria-expanded={showMoreFilters}
-                      className={`col-span-2 inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-3 text-xs font-medium transition sm:col-span-1 ${
+                      className={`col-span-2 inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-3 text-xs font-semibold transition sm:col-span-1 ${
                         showMoreFilters || build
                           ? 'bg-[var(--accent-cyan)]/15 text-[var(--accent-cyan)]'
                           : 'glass-well text-[var(--sub)] hover:text-[var(--ink)]'
@@ -1065,7 +1180,7 @@ export default function RetailOsApp() {
             className="mx-auto max-w-[1200px] px-5 py-24 sm:px-7"
           >
             <ScrollReveal scaleFrom={0.94} parallaxY={18}>
-              <div className="apple-glass rounded-[36px] p-8 sm:p-14">
+              <div className="apple-glass rounded-[28px] p-5 sm:rounded-[36px] sm:p-14">
                 <div className="max-w-2xl">
                   <div className="text-xs font-semibold uppercase tracking-widest text-[var(--accent-cyan)]">
                     Operator-Led Proof
@@ -1078,13 +1193,13 @@ export default function RetailOsApp() {
                   </p>
                 </div>
 
-                <div className="stagger mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-5">
+                <div className="stagger mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:grid-cols-4 sm:gap-5">
                   {PROOF_METRICS.map(([val, lbl]) => (
                     <div
                       key={lbl}
-                      className="glass-well group rounded-[24px] p-6 transition-colors duration-300 hover:bg-[var(--surface-2)]"
+                      className="glass-well group rounded-[20px] p-4 transition-colors duration-300 hover:bg-[var(--surface-2)] sm:rounded-[24px] sm:p-6"
                     >
-                      <strong className="block font-display text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-4xl">
+                      <strong className="block font-display text-2xl font-bold tracking-tight text-[var(--ink)] sm:text-4xl">
                         {val}
                       </strong>
                       <span className="mt-1.5 block text-xs text-[var(--sub)]">
@@ -1178,7 +1293,7 @@ export default function RetailOsApp() {
               ============================================================== */}
           <section className="mx-auto max-w-[1140px] px-5 pb-24 sm:px-7">
             <ScrollReveal scaleFrom={0.93} parallaxY={18}>
-              <div className="apple-glass relative overflow-hidden rounded-[36px] px-6 py-16 text-center sm:px-14 sm:py-20">
+              <div className="apple-glass relative overflow-hidden rounded-[28px] px-5 py-12 text-center sm:rounded-[36px] sm:px-14 sm:py-20">
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[320px] w-[720px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-gradient-to-r from-[#1756d7]/30 via-[#1a2953]/30 to-[#ffc502]/20 blur-[90px]"
@@ -1194,25 +1309,24 @@ export default function RetailOsApp() {
                     WebkitMaskImage: 'radial-gradient(ellipse 60% 70% at 50% 0%, black, transparent 75%)',
                   }}
                 />
-                <h2 className="font-display text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
+                <h2 className="font-display text-2xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
                   Bring a retail problem. <span className="ac">Leave with a plan.</span>
                 </h2>
                 <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-[var(--sub)] sm:text-base">
                   Book a working session with MOAR&apos;s operators, or request a scoped 4–8 week pilot on your own data for any capability above.
                 </p>
-                <div className="mt-9 flex flex-wrap justify-center gap-4">
+                <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:mt-9 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
                   <button
                     onClick={() => openRequest(null, 'workshop')}
-                    className="btn btn-pri px-8 py-4 text-sm"
+                    className="btn btn-pri w-full px-8 py-4 text-sm sm:w-auto"
                   >
                     Book a workshop →
                   </button>
                   <button
-                    onClick={() => setActiveTab('pm_prd')}
-                    className="btn btn-gho px-7 py-4 text-sm"
+                    onClick={() => openRequest(null, 'general')}
+                    className="btn btn-gho w-full px-6 py-4 text-sm sm:w-auto sm:px-7"
                   >
-                    <Compass className="h-4 w-4" />
-                    <span>View Phase 1 PRD &amp; Project Plan</span>
+                    <span>Talk to our team</span>
                   </button>
                 </div>
               </div>
@@ -1259,16 +1373,6 @@ export default function RetailOsApp() {
                   {l.label}
                 </button>
               ))}
-              <button
-                onClick={() =>
-                  setActiveTab(activeTab === 'pm_prd' ? 'showcase' : 'pm_prd')
-                }
-                className="font-semibold text-[var(--accent-cyan)] hover:underline"
-              >
-                {activeTab === 'pm_prd'
-                  ? 'Back to Interactive Showcase'
-                  : 'PM PRD & Project Plan'}
-              </button>
             </div>
           </div>
         </div>
@@ -1279,7 +1383,7 @@ export default function RetailOsApp() {
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         aria-label="Back to top"
         className={`apple-nav-pill fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full text-[var(--sub)] transition-all duration-500 hover:-translate-y-0.5 hover:text-[var(--ink)] ${
-          showTop && activeTab === 'showcase'
+          showTop
             ? 'translate-y-0 opacity-100'
             : 'pointer-events-none translate-y-4 opacity-0'
         }`}
