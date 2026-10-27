@@ -90,15 +90,15 @@ export default function FlagshipScrollChapters({
         </div>
       </ScrollReveal>
 
-      {/* Sticky Meta-Style Floating Chapter Bar with Sliding Pill */}
-      <div className="sticky top-20 z-30 mt-10 flex justify-center pointer-events-none">
+      {/* Sticky Meta-Style Floating Chapter Bar with Synchronized Pill */}
+      <div className="sticky top-[70px] z-30 mt-10 flex justify-center pointer-events-none">
         <div className="apple-nav-pill pointer-events-auto relative grid grid-cols-4 items-center rounded-full p-1.5">
           {/* Sliding Active Background Pill */}
           <div
             aria-hidden="true"
             style={{
               transform: `translate3d(${activeChapter * 100}%, 0, 0)`,
-              transition: 'transform 0.48s cubic-bezier(0.22, 1, 0.36, 1)',
+              transition: 'transform 0.22s cubic-bezier(0.22, 1, 0.36, 1)',
             }}
             className="pointer-events-none absolute inset-y-1.5 left-1.5 w-[calc((100%-12px)/4)] rounded-full bg-[var(--accent-blue)] shadow-md"
           />
@@ -111,9 +111,9 @@ export default function FlagshipScrollChapters({
             <button
               key={label}
               onClick={() => scrollToChapter(idx)}
-              className={`relative z-10 rounded-full px-3.5 py-1.5 text-center text-xs font-semibold transition-colors duration-300 whitespace-nowrap ${
+              className={`relative z-10 rounded-full px-3.5 py-1.5 text-center text-xs font-semibold transition-colors duration-150 whitespace-nowrap ${
                 activeChapter === idx
-                  ? 'text-white'
+                  ? 'bg-[var(--accent-blue)] text-white shadow-sm'
                   : 'text-[var(--sub)] hover:text-[var(--ink)]'
               }`}
             >
@@ -128,11 +128,11 @@ export default function FlagshipScrollChapters({
             CHAPTER 01: LEFT NARRATIVE -> RIGHT FLOATING STUDIO
             ============================================================ */}
         <div id="chap-0">
-          <ScrollReveal scaleFrom={0.94} parallaxY={18}>
+          <ScrollReveal>
             <div className="apple-glass overflow-hidden rounded-[36px] p-7 sm:p-12 lg:p-14">
               <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
                 {/* Left Narrative */}
-                <ScrollReveal shiftX={-18} parallaxY={-10} className="lg:col-span-5">
+                <div className="lg:col-span-5">
                   <div className="flex flex-wrap items-center gap-2.5 text-xs font-semibold">
                     <span className="font-mono text-[var(--accent-cyan)]">01 / 04</span>
                     <span className="text-[var(--sub)]">Stage 05 · Catalog</span>
@@ -183,10 +183,10 @@ export default function FlagshipScrollChapters({
                       Explore a pilot
                     </button>
                   </div>
-                </ScrollReveal>
+                </div>
 
                 {/* Right Floating Interactive Studio */}
-                <ScrollReveal shiftX={18} parallaxY={22} className="lg:col-span-7">
+                <div className="lg:col-span-7">
                   <div className="glass-well rounded-[28px] p-6 sm:p-8">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div className="inline-flex rounded-full bg-[var(--bg-void)]/40 p-1.5 text-xs font-semibold shadow-inner">
@@ -305,7 +305,7 @@ export default function FlagshipScrollChapters({
                       </div>
                     )}
                   </div>
-                </ScrollReveal>
+                </div>
               </div>
             </div>
           </ScrollReveal>
@@ -315,15 +315,11 @@ export default function FlagshipScrollChapters({
             CHAPTER 02: LAYOUT SHIFT -> STUDIO ON LEFT, NARRATIVE ON RIGHT
             ============================================================ */}
         <div id="chap-1">
-          <ScrollReveal scaleFrom={0.94} parallaxY={18}>
+          <ScrollReveal>
             <div className="apple-glass overflow-hidden rounded-[36px] p-7 sm:p-12 lg:p-14">
               <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
                 {/* Left Floating Studio */}
-                <ScrollReveal
-                  shiftX={-18}
-                  parallaxY={22}
-                  className="order-2 lg:order-1 lg:col-span-7"
-                >
+                <div className="order-2 lg:order-1 lg:col-span-7">
                   <div className="glass-well rounded-[28px] p-6 sm:p-8">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div className="inline-flex rounded-full bg-[var(--bg-void)]/40 p-1.5 text-xs font-semibold shadow-inner">
@@ -413,14 +409,10 @@ export default function FlagshipScrollChapters({
                       </div>
                     )}
                   </div>
-                </ScrollReveal>
+                </div>
 
                 {/* Right Narrative */}
-                <ScrollReveal
-                  shiftX={18}
-                  parallaxY={-12}
-                  className="order-1 lg:order-2 lg:col-span-5"
-                >
+                <div className="order-1 lg:order-2 lg:col-span-5">
                   <div className="flex flex-wrap items-center gap-2.5 text-xs font-semibold">
                     <span className="font-mono text-[var(--accent-cyan)]">02 / 04</span>
                     <span className="text-[var(--sub)]">Stage 05 &amp; 06 · Catalog &amp; Marketplace</span>
@@ -471,7 +463,7 @@ export default function FlagshipScrollChapters({
                       Explore a pilot
                     </button>
                   </div>
-                </ScrollReveal>
+                </div>
               </div>
             </div>
           </ScrollReveal>
@@ -481,7 +473,7 @@ export default function FlagshipScrollChapters({
             CHAPTER 03: PANORAMIC CENTERED STAGE LAYOUT SHIFT
             ============================================================ */}
         <div id="chap-2">
-          <ScrollReveal scaleFrom={0.93} parallaxY={20}>
+          <ScrollReveal>
             <div className="apple-glass overflow-hidden rounded-[36px] p-7 sm:p-12 lg:p-14">
               <div className="mx-auto max-w-3xl text-center">
                 <div className="inline-flex flex-wrap items-center justify-center gap-2.5 text-xs font-semibold">
@@ -499,7 +491,7 @@ export default function FlagshipScrollChapters({
                 </p>
               </div>
 
-              <ScrollReveal parallaxY={16} className="mt-10">
+              <div className="mt-10">
                 <div className="glass-well mx-auto max-w-4xl rounded-[28px] p-6 sm:p-8">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="inline-flex rounded-full bg-[var(--bg-void)]/40 p-1.5 text-xs font-semibold shadow-inner">
@@ -600,7 +592,7 @@ export default function FlagshipScrollChapters({
                     )}
                   </div>
                 </div>
-              </ScrollReveal>
+              </div>
 
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <button
@@ -625,11 +617,11 @@ export default function FlagshipScrollChapters({
             CHAPTER 04: GEO-INTELLIGENCE & CATCHMENT SCORING
             ============================================================ */}
         <div id="chap-3">
-          <ScrollReveal scaleFrom={0.94} parallaxY={18}>
+          <ScrollReveal>
             <div className="apple-glass overflow-hidden rounded-[36px] p-7 sm:p-12 lg:p-14">
               <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
                 {/* Left Narrative */}
-                <ScrollReveal shiftX={-18} parallaxY={-10} className="lg:col-span-5">
+                <div className="lg:col-span-5">
                   <div className="flex flex-wrap items-center gap-2.5 text-xs font-semibold">
                     <span className="font-mono text-[var(--accent-cyan)]">04 / 04</span>
                     <span className="text-[var(--sub)]">Stage 01 &amp; 02 · Discover &amp; Plan</span>
@@ -680,10 +672,10 @@ export default function FlagshipScrollChapters({
                       Meet the solution team
                     </button>
                   </div>
-                </ScrollReveal>
+                </div>
 
                 {/* Right Interactive Floating Grid (Hover-responsive cells) */}
-                <ScrollReveal shiftX={18} parallaxY={22} className="lg:col-span-7">
+                <div className="lg:col-span-7">
                   <div className="glass-well rounded-[28px] p-6 sm:p-8">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="text-xs font-semibold text-[var(--ink)]">
@@ -763,7 +755,7 @@ export default function FlagshipScrollChapters({
                       </div>
                     </div>
                   </div>
-                </ScrollReveal>
+                </div>
               </div>
             </div>
           </ScrollReveal>

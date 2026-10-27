@@ -170,7 +170,7 @@ export default function HeroShowcase({
   return (
     <section
       ref={heroRef}
-      className="relative mx-auto max-w-[1260px] overflow-hidden px-5 pt-28 pb-16 sm:px-7 sm:pt-36"
+      className="relative mx-auto max-w-[1260px] overflow-hidden px-5 pt-28 pb-16 sm:px-7 sm:pt-36 2xl:max-w-[1560px]"
     >
       {/* Subtle Perspective Architectural Grid + Center Horizon Glow */}
       <div
@@ -178,8 +178,8 @@ export default function HeroShowcase({
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(56, 189, 248, 0.045) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(56, 189, 248, 0.045) 1px, transparent 1px)
+            linear-gradient(to right, rgba(255, 197, 2, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(23, 86, 215, 0.07) 1px, transparent 1px)
           `,
           backgroundSize: '56px 56px',
           maskImage:
@@ -190,16 +190,25 @@ export default function HeroShowcase({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-24 -z-10 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-600/20 via-cyan-400/12 to-teal-400/10 blur-[110px]"
+        className="pointer-events-none absolute left-1/2 top-24 -z-10 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-[#1756d7]/28 via-[#1a2953]/25 to-[#ffc502]/12 blur-[110px]"
       />
 
       {/* Top Split: Editorial Copy + Quick Telemetry */}
       <div className="mx-auto max-w-4xl text-center">
         {/* Live OS Status Pill */}
-        <div className="glass-well inline-flex flex-wrap items-center justify-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold">
-          <span className="inline-flex items-center gap-1.5 text-[var(--accent-cyan)]">
-            <span className="h-2 w-2 rounded-full bg-[var(--accent-cyan)] animate-ping" />
-            <span>MOAR RetailOS</span>
+        <div style={{ ['--d' as string]: '20ms' }} className="hero-in glass-well inline-flex flex-wrap items-center justify-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-semibold">
+          <span className="inline-flex items-center gap-2 text-[var(--accent-cyan)]">
+            <img
+              src="/moar-logo-white.png"
+              alt="MOAR."
+              className="moar-logo-white h-3.5 w-auto object-contain"
+            />
+            <img
+              src="/moar-logo-dark.png"
+              alt="MOAR."
+              className="moar-logo-dark h-3.5 w-auto object-contain"
+            />
+            <span>RetailOS</span>
           </span>
           <span className="opacity-30">|</span>
           <span className="text-[var(--ink)]">9 Lifecycle Stages</span>
@@ -208,17 +217,17 @@ export default function HeroShowcase({
         </div>
 
         {/* Sculpted Hero Headline */}
-        <h1 className="mx-auto mt-6 max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-tight text-[var(--ink)] sm:text-6xl lg:text-[74px]">
+        <h1 style={{ ['--d' as string]: '60ms' }} className="hero-in mx-auto mt-6 max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-tight text-[var(--ink)] sm:text-6xl lg:text-[74px]">
           The operating system for{' '}
           <span className="ac">retail transformation.</span>
         </h1>
 
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[var(--sub)] sm:text-lg">
+        <p style={{ ['--d' as string]: '110ms' }} className="hero-in mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[var(--sub)] sm:text-lg">
           Advisory, AI, and operational accelerators unified into one guided platform. Hover across the live command deck below to preview how MOAR transforms catalog, space, location, and store operations.
         </p>
 
         {/* Primary Action Row */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+        <div style={{ ['--d' as string]: '150ms' }} className="hero-in mt-8 flex flex-wrap items-center justify-center gap-3.5">
           <button
             onClick={() => onScrollTo('flagshipSec')}
             className="btn btn-pri px-7 py-3.5 text-sm"
@@ -245,90 +254,115 @@ export default function HeroShowcase({
       {/* ====================================================================
           CENTERPIECE: SPATIAL RETAILOS COMMAND DECK + FLOATING SATELLITE CARDS
           ==================================================================== */}
+      <div style={{ ['--d' as string]: '200ms' }} className="hero-in">
       <div
         className="relative mt-12 lg:mt-14"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {/* LEFT FLOATING SATELLITE WIDGET (Desktop Spatial Layer) */}
-        <div
-          ref={leftCardRef}
-          className="apple-glass hidden xl:block absolute -left-4 top-10 z-20 w-64 rounded-[26px] p-5 transition-transform duration-75"
-        >
-          <div className="flex items-center justify-between text-[11px] font-semibold text-[var(--accent-cyan)]">
-            <span className="flex items-center gap-1.5">
-              <Zap className="h-3.5 w-3.5" />
-              <span>Value Chain Pulse</span>
-            </span>
-            <span className="font-mono text-[10px] text-[var(--mut)]">9 STAGES</span>
-          </div>
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {STAGES.map((st, idx) => (
-              <button
-                key={st.key}
-                onClick={() => {
-                  onSelectStage(st.key);
-                  onScrollTo('valuechain');
-                }}
-                className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition ${
-                  idx === 0 || idx === 1 || idx === 4
-                    ? 'bg-[var(--accent-blue)]/25 text-[var(--accent-cyan)]'
-                    : 'bg-[var(--surface-1)] text-[var(--sub)] hover:text-[var(--ink)]'
-                }`}
-              >
-                {st.num} {st.label}
-              </button>
-            ))}
-          </div>
-          <div className="mt-4 rounded-2xl bg-[var(--surface-1)] p-3">
-            <div className="font-display text-lg font-bold text-[var(--ink)]">
-              8M+ SKUs
-            </div>
-            <div className="text-[11px] text-[var(--sub)]">
-              Managed across 40+ global retailers
+        <div className="mx-auto grid max-w-[1000px] grid-cols-1 gap-5 md:grid-cols-2 2xl:max-w-none 2xl:grid-cols-[250px_minmax(0,1fr)_250px] 2xl:gap-7">
+        {/* LEFT SATELLITE — own column on wide screens, row below the deck otherwise */}
+        <div className="order-2 hidden md:block 2xl:order-none 2xl:mt-20 2xl:self-start">
+          <div ref={leftCardRef} className="h-full transition-transform duration-75">
+            <div className="float-slow h-full">
+              <div className="apple-glass relative h-full overflow-hidden rounded-[26px] p-5">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#ffc502]/10 blur-2xl"
+                />
+                <div className="flex items-center justify-between text-[11px] font-semibold text-[var(--accent-cyan)]">
+                  <span className="flex items-center gap-1.5">
+                    <Zap className="h-3.5 w-3.5" />
+                    <span>Value Chain Pulse</span>
+                  </span>
+                  <span className="font-mono text-[10px] text-[var(--mut)]">9 STAGES</span>
+                </div>
+                <div className="mt-3.5 flex flex-wrap gap-1.5">
+                  {STAGES.map((st, idx) => (
+                    <button
+                      key={st.key}
+                      onClick={() => {
+                        onSelectStage(st.key);
+                        onScrollTo('valuechain');
+                      }}
+                      className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition hover:-translate-y-0.5 ${
+                        idx === 0 || idx === 1 || idx === 4
+                          ? 'bg-[var(--accent-blue)]/25 text-[var(--accent-cyan)]'
+                          : 'bg-[var(--surface-1)] text-[var(--sub)] hover:text-[var(--ink)]'
+                      }`}
+                    >
+                      {st.num} {st.label}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-4 flex items-end justify-between gap-3 rounded-2xl bg-[var(--surface-1)] p-3.5">
+                  <div>
+                    <div className="font-display text-xl font-bold text-[var(--ink)]">8M+ SKUs</div>
+                    <div className="text-[11px] text-[var(--sub)]">Managed across 40+ global retailers</div>
+                  </div>
+                  {/* mini sparkline */}
+                  <svg viewBox="0 0 60 24" className="h-6 w-14 shrink-0" aria-hidden="true">
+                    <path
+                      d="M1 20 L10 16 L19 18 L28 10 L37 12 L46 5 L59 3"
+                      fill="none"
+                      stroke="#ffc502"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* RIGHT FLOATING SATELLITE WIDGET (Desktop Spatial Layer) */}
-        <div
-          ref={rightCardRef}
-          className="apple-glass hidden xl:block absolute -right-4 bottom-8 z-20 w-64 rounded-[26px] p-5 transition-transform duration-75"
-        >
-          <div className="flex items-center justify-between text-[11px] font-semibold text-emerald-400">
-            <span className="flex items-center gap-1.5">
-              <Globe2 className="h-3.5 w-3.5" />
-              <span>Operator Delivery</span>
-            </span>
-            <span className="font-mono text-[10px] text-[var(--mut)]">5 HUBS</span>
-          </div>
-          <div className="mt-2.5 font-display text-xl font-bold text-[var(--ink)]">
-            200+ Operators
-          </div>
-          <p className="mt-1 text-[11px] leading-relaxed text-[var(--sub)]">
-            Bengaluru · Hyderabad · Dallas · Chennai · Manila
-          </p>
-          <div className="mt-3.5 space-y-1.5">
-            {[
-              'Luxury Dept Store GCC',
-              'Fortune 500 Auto Parts',
-              'Aviation Ground Handling',
-            ].map((client) => (
-              <div
-                key={client}
-                className="flex items-center gap-2 rounded-xl bg-[var(--surface-1)] px-3 py-1.5 text-[11px] font-medium text-[var(--ink)]"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                <span className="truncate">{client}</span>
+        {/* RIGHT SATELLITE */}
+        <div className="order-3 hidden md:block 2xl:order-last 2xl:mb-16 2xl:self-end">
+          <div ref={rightCardRef} className="h-full transition-transform duration-75">
+            <div className="float-slower h-full">
+              <div className="apple-glass relative h-full overflow-hidden rounded-[26px] p-5">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -left-10 -bottom-10 h-28 w-28 rounded-full bg-[#1756d7]/20 blur-2xl"
+                />
+                <div className="flex items-center justify-between text-[11px] font-semibold text-emerald-400">
+                  <span className="flex items-center gap-1.5">
+                    <Globe2 className="h-3.5 w-3.5" />
+                    <span>Operator Delivery</span>
+                  </span>
+                  <span className="font-mono text-[10px] text-[var(--mut)]">5 HUBS</span>
+                </div>
+                <div className="mt-2.5 font-display text-xl font-bold text-[var(--ink)]">
+                  200+ Operators
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-[var(--sub)]">
+                  Bengaluru · Hyderabad · Dallas · Chennai · Manila
+                </p>
+                <div className="mt-3.5 flex flex-wrap gap-1.5">
+                  {[
+                    'Luxury Dept Store GCC',
+                    'Fortune 500 Auto Parts',
+                    'Aviation Ground Handling',
+                  ].map((client) => (
+                    <div
+                      key={client}
+                      className="flex items-center gap-2 whitespace-nowrap rounded-xl bg-[var(--surface-1)] px-3 py-1.5 text-[11px] font-medium text-[var(--ink)] 2xl:w-full"
+                    >
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
+                      <span>{client}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
         {/* MAIN INTERACTIVE OS COMMAND DECK */}
         <div
           ref={mainDeckRef}
-          className="apple-glass mx-auto max-w-[960px] overflow-hidden rounded-[34px] p-3 sm:p-5 transition-transform duration-75"
+          className="apple-glass order-1 overflow-hidden rounded-[34px] p-3 transition-transform duration-75 sm:p-5 md:col-span-2 2xl:order-none 2xl:col-span-1"
         >
           {/* OS Top Window Bar + Hover Mode Switcher Pills */}
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] bg-[var(--bg-void)]/45 px-4 py-3">
@@ -341,7 +375,7 @@ export default function HeroShowcase({
               </span>
             </div>
 
-            {/* 4 Hover-Activated OS Mode Tabs with Gliding Pill */}
+            {/* 4 Hover-Activated OS Mode Tabs with Synchronized Pill */}
             <div
               className="relative grid grid-cols-2 gap-1 rounded-full bg-[var(--surface-1)] p-1 sm:grid-cols-4"
               role="tablist"
@@ -351,9 +385,9 @@ export default function HeroShowcase({
                 aria-hidden="true"
                 style={{
                   transform: `translate3d(${activeIdx * 100}%, 0, 0)`,
-                  transition: 'transform 0.42s cubic-bezier(0.22, 1, 0.36, 1)',
+                  transition: 'transform 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
                 }}
-                className="pointer-events-none absolute inset-y-1 left-1 hidden w-[calc((100%-8px)/4)] rounded-full bg-[var(--accent-blue)] sm:block"
+                className="pointer-events-none absolute inset-y-1 left-1 hidden w-[calc((100%-8px)/4)] rounded-full bg-[var(--accent-blue)] shadow-sm sm:block"
               />
               {HERO_MODES.map((m, idx) => {
                 const on = activeIdx === idx;
@@ -364,9 +398,9 @@ export default function HeroShowcase({
                     aria-selected={on}
                     onMouseEnter={() => setActiveIdx(idx)}
                     onClick={() => setActiveIdx(idx)}
-                    className={`relative z-10 rounded-full px-3 py-1.5 text-center text-[11px] font-semibold transition-colors duration-200 whitespace-nowrap ${
+                    className={`relative z-10 min-w-0 truncate rounded-full px-3 py-1.5 text-center text-[11px] font-semibold transition-colors duration-150 whitespace-nowrap ${
                       on
-                        ? 'bg-[var(--accent-blue)] text-white sm:bg-transparent'
+                        ? 'bg-[var(--accent-blue)] text-white shadow-sm'
                         : 'text-[var(--sub)] hover:text-[var(--ink)]'
                     }`}
                   >
@@ -614,6 +648,8 @@ export default function HeroShowcase({
             </div>
           </div>
         </div>
+        </div>
+      </div>
       </div>
     </section>
   );

@@ -2,138 +2,131 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+/* ------------------------------------------------------------------
+   Shared scroll engine
+   One passive scroll/resize listener + one rAF loop drives every
+   scroll-linked element on the page (instead of one listener each).
+   ------------------------------------------------------------------ */
+
+type ScrollSubscriber = () => boolean; // return true while still animating
+
+const subscribers = new Set<ScrollSubscriber>();
+let rafId = 0;
+let listening = false;
+
+function runFrame() {
+  rafId = 0;
+  let needsMore = false;
+  subscribers.forEach((fn) => {
+    if (fn()) needsMore = true;
+  });
+  if (needsMore) rafId = requestAnimationFrame(runFrame);
+}
+
+function requestFrame() {
+  if (!rafId) rafId = requestAnimationFrame(runFrame);
+}
+
+export function subscribeScroll(fn: ScrollSubscriber) {
+  subscribers.add(fn);
+  if (!listening && typeof window !== 'undefined') {
+    window.addEventListener('scroll', requestFrame, { passive: true });
+    window.addEventListener('resize', requestFrame, { passive: true });
+    listening = true;
+  }
+  requestFrame();
+  return () => {
+    subscribers.delete(fn);
+    if (subscribers.size === 0 && listening) {
+      window.removeEventListener('scroll', requestFrame);
+      window.removeEventListener('resize', requestFrame);
+      listening = false;
+    }
+  };
+}
+
+export function prefersReducedMotion() {
+  return (
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  );
+}
+
+/* ------------------------------------------------------------------
+   ScrollReveal
+   Crisp, zero-blur, hardware-accelerated entrance animation that
+   triggers slightly ahead of the viewport so text and cards are
+   immediately sharp in both light and dark modes.
+   ------------------------------------------------------------------ */
+
+type RevealVariant = 'up' | 'left' | 'right' | 'zoom' | 'fade';
+
 interface ScrollRevealProps {
   children: React.ReactNode;
   delayMs?: number;
   className?: string;
-  /** Vertical parallax amplitude in px as element travels through viewport */
+  /** Kept for prop compatibility */
   parallaxY?: number;
-  /** Subtle horizontal offset in px that converges to 0 as element centers */
+  /** Horizontal entrance direction/offset (negative = from left, positive = from right) */
   shiftX?: number;
-  /** Kept for prop compatibility; handled cleanly by CSS entrance reveal */
+  /** Kept for prop compatibility */
   scaleFrom?: number;
+  /** Entrance style; inferred from shiftX when omitted */
+  variant?: RevealVariant;
 }
 
 export default function ScrollReveal({
   children,
   delayMs = 0,
   className = '',
-  parallaxY = 0,
   shiftX = 0,
+  variant,
 }: ScrollRevealProps) {
   const outerRef = useRef<HTMLDivElement | null>(null);
-  const innerRef = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
+
+  const resolvedVariant: RevealVariant =
+    variant ?? (shiftX < 0 ? 'left' : shiftX > 0 ? 'right' : 'up');
+
+  const cappedDelay = Math.min(Math.max(0, delayMs), 100);
 
   useEffect(() => {
     const outer = outerRef.current;
     if (!outer) return;
+    if (prefersReducedMotion()) {
+      setVisible(true);
+      return;
+    }
 
-    const observer = new IntersectionObserver(
+    // Immediately reveal if already within or above the extended viewport
+    const rect = outer.getBoundingClientRect();
+    const vh = window.innerHeight || 800;
+    if (rect.top <= vh + 100) {
+      setVisible(true);
+      return;
+    }
+
+    const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-          }
-        });
+        if (entries.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          io.disconnect();
+        }
       },
-      { threshold: 0.06, rootMargin: '0px 0px -20px 0px' }
+      { threshold: 0.01, rootMargin: '0px 0px 100px 0px' }
     );
-    observer.observe(outer);
-
-    const hasMotion = parallaxY !== 0 || shiftX !== 0;
-    if (!hasMotion) {
-      return () => observer.disconnect();
-    }
-
-    let rafId = 0;
-    let isRunning = false;
-    let currY = 0;
-    let currX = 0;
-    let targetY = 0;
-    let targetX = 0;
-
-    const computeTargets = () => {
-      if (!outer) return;
-      const rect = outer.getBoundingClientRect();
-      const vh = window.innerHeight || 800;
-      const raw = (vh - rect.top) / (vh + rect.height);
-      const progress = Math.max(0, Math.min(1, raw));
-
-      const centerFactor = Math.max(0, 1 - Math.abs(progress - 0.48) * 1.85);
-      targetY = (0.5 - progress) * parallaxY;
-      targetX = (1 - centerFactor) * shiftX;
-    };
-
-    const tick = () => {
-      const inner = innerRef.current;
-      if (!inner) {
-        isRunning = false;
-        return;
-      }
-
-      currY += (targetY - currY) * 0.14;
-      currX += (targetX - currX) * 0.14;
-
-      inner.style.transform = `translate3d(${currX.toFixed(1)}px, ${currY.toFixed(
-        1
-      )}px, 0)`;
-
-      const settled =
-        Math.abs(targetY - currY) < 0.1 && Math.abs(targetX - currX) < 0.1;
-
-      if (!settled) {
-        rafId = requestAnimationFrame(tick);
-      } else {
-        isRunning = false;
-      }
-    };
-
-    const onScroll = () => {
-      computeTargets();
-      if (!isRunning) {
-        isRunning = true;
-        rafId = requestAnimationFrame(tick);
-      }
-    };
-
-    computeTargets();
-    currY = targetY;
-    currX = targetX;
-    if (innerRef.current) {
-      innerRef.current.style.transform = `translate3d(${currX.toFixed(
-        1
-      )}px, ${currY.toFixed(1)}px, 0)`;
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, [parallaxY, shiftX]);
-
-  const hasMotion = parallaxY !== 0 || shiftX !== 0;
+    io.observe(outer);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <div
       ref={outerRef}
-      style={{ transitionDelay: `${delayMs}ms` }}
-      className={`reveal-outer ${
-        visible ? 'reveal-visible' : 'reveal-hidden'
-      } ${className}`}
+      style={{ transitionDelay: visible && cappedDelay ? `${cappedDelay}ms` : '0ms' }}
+      data-variant={resolvedVariant}
+      className={`reveal-outer ${visible ? 'reveal-visible' : 'reveal-hidden'} ${className}`}
     >
-      {hasMotion ? (
-        <div ref={innerRef} className="h-full">
-          {children}
-        </div>
-      ) : (
-        children
-      )}
+      {children}
     </div>
   );
 }
